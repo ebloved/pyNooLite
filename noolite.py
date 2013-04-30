@@ -10,22 +10,54 @@ import sys
 import usb.core
 
 
-class nooLite:
-  def executeCommand(self, cmd, ch, lvl):
-    command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
-    command[1] = cmd
-    command[4] = ch
-    if cmd == 0x06:
-      command[2] = 0x01
-      command[5] = lvl
-    dev = usb.core.find(idVendor=0x16c0, idProduct=0x05df)  # find NooLite PC118
-    if dev is None:
-      sys.exit('Device not found')
-    if dev.is_kernel_driver_active(0) is True:
-      dev.detach_kernel_driver(0)
-    dev.set_configuration()
-    dev.ctrl_transfer(0x21, 0x09, 0, 0, command)
+class NooLite:
+    _command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+    def on(self, ch):
+        """Turn power on on channel
+        First channal is 0 """
+        cmd = self._command
+        cmd[1] = 0x02       # "Turn power on" command
+        cmd[4] = ch
+        dev = usb.core.find(idVendor=0x16c0, idProduct=0x05df)  # find NooLite PC118
+        if dev is None:
+            sys.exit('Device not found')
+        if dev.is_kernel_driver_active(0) is True:
+            dev.detach_kernel_driver(0)
+        dev.set_configuration()
+        dev.ctrl_transfer(0x21, 0x09, 0, 0, cmd)
 
+    def off(self, ch):
+        """Turn power off on channel
+        First channal is 0 """
+        cmd = self._command
+        cmd[1] = 0x00       # "Turn power off" command
+        cmd[4] = ch
+        dev = usb.core.find(idVendor=0x16c0, idProduct=0x05df)  # find NooLite PC118
+        if dev is None:
+            sys.exit('Device not found')
+        if dev.is_kernel_driver_active(0) is True:
+            dev.detach_kernel_driver(0)
+        dev.set_configuration()
+        dev.ctrl_transfer(0x21, 0x09, 0, 0, cmd)
+
+    """
+    def executeCommand(self, cmd, ch, lvl):
+        command = self._command
+        command[1] = cmd
+        command[4] = ch
+        if cmd == 0x06:
+            command[2] = 0x01
+            command[5] = lvl
+        dev = usb.core.find(idVendor=0x16c0, idProduct=0x05df)  # find NooLite PC118
+        if dev is None:
+            sys.exit('Device not found')
+        if dev.is_kernel_driver_active(0) is True:
+            dev.detach_kernel_driver(0)
+        dev.set_configuration()
+        dev.ctrl_transfer(0x21, 0x09, 0, 0, command)
+    """
+
+"""
 class main:
   def usage(self, fileName):
     print 'Usage: ' + fileName + ' <cmdX> [level]'
@@ -76,3 +108,4 @@ class main:
 
 if __name__ == '__main__':
   main().execute(sys.argv)
+"""
