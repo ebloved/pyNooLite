@@ -5,57 +5,99 @@
 #   sudo apt-get install python-pip
 #   sudo pip install pyusb
 
-import os
-import sys
 import usb.core
 
 
 class NooLite:
-    _command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
-    def on(self, ch):
-        """Turn power on on channel
-        First channal is 0 """
-        cmd = self._command
-        cmd[1] = 0x02       # "Turn power on" command
-        cmd[4] = ch
-        dev = usb.core.find(idVendor=0x16c0, idProduct=0x05df)  # find NooLite PC118
+    _init_command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+
+    def __init__(self, channals=8, idVendor=0x16c0, idProduct=0x05df):
+        self._idVendor = idVendor
+        self._idProduct = idProduct
+        self._channales = channals
+        self._cmd = self._init_command
+
+    def _set_ch(self, ch):
+        if (ch < self._channales) and (ch >= 0):
+            self._cmd[4] = ch
+        else:
+            return -2
+
+    def _send(self):
+        dev = usb.core.find(idVendor = self._idVendor, idProduct = self._idProduct)  # find NooLite usb device
         if dev is None:
-            sys.exit('Device not found')
+            return -1
         if dev.is_kernel_driver_active(0) is True:
             dev.detach_kernel_driver(0)
         dev.set_configuration()
-        dev.ctrl_transfer(0x21, 0x09, 0, 0, cmd)
+        dev.ctrl_transfer(0x21, 0x09, 0, 0, self._cmd)
+        return 0
+
+    def on(self, ch):
+        """Turn power on on channel
+        First channal is 0 """
+        self._cmd = self._init_command
+        self._cmd[1] = 0x02       # "Turn power on" command
+        if self._set_ch(ch):
+            return -2
+        return self._send()
 
     def off(self, ch):
         """Turn power off on channel
         First channal is 0 """
-        cmd = self._command
-        cmd[1] = 0x00       # "Turn power off" command
-        cmd[4] = ch
-        dev = usb.core.find(idVendor=0x16c0, idProduct=0x05df)  # find NooLite PC118
-        if dev is None:
-            sys.exit('Device not found')
-        if dev.is_kernel_driver_active(0) is True:
-            dev.detach_kernel_driver(0)
-        dev.set_configuration()
-        dev.ctrl_transfer(0x21, 0x09, 0, 0, cmd)
+        self._cmd = self._init_command
+        self._cmd[1] = 0x00       # "Turn power off" command
+        if self._set_ch(ch):
+            return -2
+        return self._send()
 
-    """
-    def executeCommand(self, cmd, ch, lvl):
-        command = self._command
-        command[1] = cmd
-        command[4] = ch
-        if cmd == 0x06:
-            command[2] = 0x01
-            command[5] = lvl
-        dev = usb.core.find(idVendor=0x16c0, idProduct=0x05df)  # find NooLite PC118
-        if dev is None:
-            sys.exit('Device not found')
-        if dev.is_kernel_driver_active(0) is True:
-            dev.detach_kernel_driver(0)
-        dev.set_configuration()
-        dev.ctrl_transfer(0x21, 0x09, 0, 0, command)
-    """
+    def set(self, ch, level):
+        """Set brightness level
+        Max level is 120
+        First channal is 0 """
+        self._cmd = self._init_command
+        self._cmd[1] = 0x06       # "Turn power on" command
+        if self._set_ch(ch):
+            return -2
+        self._cmd[2] = 0x01       # send level
+        return self._send()
+
+        # level in cmd must be in [0, 35 - 155]
+        if level == 0:
+            cmd[5] = 0
+        elif level > 120:
+            cmd[5] = 155
+        else:
+            cmd[5] = 35 + lvl
+        return self._send()
+
+    def bind(self, ch):
+        """ Send bind signal on channel
+        First channal is 0 """
+        self._cmd = self._init_command
+        self._cmd[1] = 0x0f       # "bind" command
+        if self._set_ch(ch):
+            return -2
+        return self._send()
+
+    def unbind(self, ch):
+        """ Send unbind signal on channel
+        First channal is 0 """
+        self._cmd = self._init_command
+        self._cmd[1] = 0x0f       # "unbind" command
+        if self._set_ch(ch):
+            return -2
+        return self._send()
+
+    def switch(self, ch):
+        """switch power between off and on on channel
+        First channal is 0 """
+        self._cmd = self._init_command
+        self._cmd[1] = 0x04       # "switch" command
+        if self._set_ch(ch):
+            return -2
+        return self._send()
+
 
 """
 class main:
