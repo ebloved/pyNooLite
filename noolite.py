@@ -31,7 +31,7 @@ class NooLite:
         try:
             ch = int(ch)
         except ValueError:
-            raise ValueError("channal %s can't be converted to int" % (type(ch)))
+            raise ValueError("channal has %s can't be converted to int" % (type(ch)))
         if (ch > self._channales) or (ch < 0):
             raise NooLiteErr("Can't work with %d channal" % (ch))
         self._cmd[4] = ch
