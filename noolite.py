@@ -7,26 +7,40 @@
 
 import usb.core
 
+class NooLiteErr(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
+
 
 class NooLite:
     _init_command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
     def __init__(self, channals=8, idVendor=0x16c0, idProduct=0x05df):
+        if (type(idVendor) != type(int())) or (type(idProduct)) != type(int()):
+            raise ValueError("idVendor and idProduct must has int type")
+        if type(channals) != type(int()):
+            raise ValueError("channals must has int type")
         self._idVendor = idVendor
         self._idProduct = idProduct
         self._channales = channals
         self._cmd = self._init_command
 
     def _set_ch(self, ch):
-        if (ch < self._channales) and (ch >= 0):
-            self._cmd[4] = ch
-        else:
-            return -2
+        try:
+            ch = int(ch)
+        except ValueError:
+            raise ValueError("channal %s can't be converted to int" % (type(ch)))
+        if (ch > self._channales) and (ch < 0):
+            raise NooLiteErr("Can't work with %d channal" % (ch))
+        self._cmd[4] = ch
 
     def _send(self):
         dev = usb.core.find(idVendor = self._idVendor, idProduct = self._idProduct)  # find NooLite usb device
         if dev is None:
-            return -1
+            raise NooLiteErr("Can find device with idVendor=%d idProduct=%d"
+                             % (self._idVendor, self._idProduct))
         if dev.is_kernel_driver_active(0) is True:
             dev.detach_kernel_driver(0)
         dev.set_configuration()
