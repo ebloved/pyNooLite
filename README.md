@@ -1,14 +1,37 @@
-forked from https://github.com/kyuri/nooLite commit 504b9bd7572ba8f5b337fbb27cd3343fcbbd8550
+<p>This project is a <b>python module</b> for woriking with <b>NooLite USB stick (PC118, PC1116, PC1132)</b>.<br>
+Can be easy used for making smarthome.<br>
+About NooLite: http://www.noo.com.by/</p>
 
-This project was started to support NooLite PC118 USB Stick (www.noo.com.by) on Linux.
 
-Dependences:
-* python module pyusb
-To install it on Ubuntu 12.04 do:
-  sudo apt-get install python-pip
-  sudo pip install pyusb
+<p>Look at wiki for more info.</p>
 
-* To have access to device from common user add rule to udev, for example to /etc/udev/rules.d/50-noolite.rules next line:
-ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", SUBSYSTEMS=="usb", ACTION=="add", MODE="0666", GROUP="dialout"
-And add your user to dialout group
-sudo usermod <user> -a -G dialout
+<p>Author: Anton Balashov<br>
+E-mail: sicness(_at_)darklogic.ru<br>
+License: GPL v3</p>
+
+<H4>Example:</H4>
+    import noolite
+
+    n = noolite.NooLite()
+    n.on(0)       # Turn power on on first channel
+    n.off(0)      # Turn power off on first channel
+    n.set(1, 115) # Set 115 level on second channel
+    n.bind(7)     # send "bind" signal on channel 8
+
+<p>Look at main.py for a extra example</p>
+
+<h4>Dependences:</h4>
+
+* Python 2.*
+
+*  python module pyusb<br>
+To install it on Ubuntu 12.04 do: <br>
+     <i>sudo apt-get install python-pip <br>
+     sudo pip install pyusb</i><br>
+
+* To have access to device from common user add rule to udev, for example to /etc/udev/rules.d/50-noolite.rules next line:<br>
+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", SUBSYSTEMS=="usb", ACTION=="add", MODE="0666", GROUP="dialout"<br>
+And add your user to dialout group:<br>
+    <i>sudo usermod &lt;user&gt; -a -G dialout</i>
+
+<p><h6>Forked from https://github.com/kyuri/nooLite commit 504b9bd7572ba8f5b337fbb27cd3343fcbbd8550</h6></p>
