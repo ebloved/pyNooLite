@@ -1,5 +1,17 @@
+#!/usr/bin/env python
+
+"""
+Example of usage python module for NooLite USB stick
+
+Last version at: https://github.com/Sicness/pyNooLite
+"""
 import sys
 import noolite
+
+__author__ = "Anton Balashov"
+__license__ = "GPL v3"
+__maintainer__ = "Anton Balashov"
+__email__ = "Sicness@darklogic.ru"
 
 def help():
     print """

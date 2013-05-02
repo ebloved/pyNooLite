@@ -7,7 +7,8 @@ About NooLite: http://www.noo.com.by/</p>
 
 <p>Author: Anton Balashov<br>
 E-mail: sicness(_at_)darklogic.ru<br>
-License: GPL v3</p>
+License: GPL v3<br>
+Site: https://github.com/Sicness/pyNooLite</p>
 
 <H4>Example:</H4>
     import noolite
@@ -25,7 +26,7 @@ License: GPL v3</p>
 * Python 2.*
 
 *  python module pyusb<br>
-To install it on Ubuntu 12.04 do: <br>
+For Ubuntu do: <br>
      <i>sudo apt-get install python-pip <br>
      sudo pip install pyusb</i><br>
 

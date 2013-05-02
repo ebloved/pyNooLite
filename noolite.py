@@ -1,11 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-# Requires: pyusb
-# To install it on Ubuntu 12.04 do:
-#   sudo apt-get install python-pip
-#   sudo pip install pyusb
+## Python module for working with NooLite USB stick
+
+## Last version at: https://github.com/Sicness/pyNooLite
 
 import usb.core
+
+__author__ = "Anton Balashov"
+__license__ = "GPL v3"
+__maintainer__ = "Anton Balashov"
+__email__ = "Sicness@darklogic.ru"
 
 class NooLiteErr(Exception):
     def __init__(self, value):
