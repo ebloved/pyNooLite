@@ -10,6 +10,17 @@ E-mail: sicness(_at_)darklogic.ru<br>
 License: GPL v3<br>
 Site: https://github.com/Sicness/pyNooLite</p>
 
+<h4>Install</h4>
+
+    sudo apt-get install pip
+    sudo pip install noolite
+
+<b>Or </b>download this repo and go into.
+
+    sudo python setup.py install
+
+<b>Or </b>simple copy noolite.py from this repo to your project<br>
+
 <H4>Example:</H4>
     import noolite
 
