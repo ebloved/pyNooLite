@@ -89,6 +89,24 @@ class NooLite:
             cmd[5] = 35 + lvl
         return self._send()
 
+    def save(self, ch):
+        """Save state on channel to scenario
+        First channal is 0 """
+        self._cmd = self._init_command
+        self._cmd[1] = 0x07       # "Turn power on" command
+        if self._set_ch(ch):
+            return -2
+        return self._send()
+
+    def load(self, ch):
+        """Call saved scenario on channel
+        First channal is 0 """
+        self._cmd = self._init_command
+        self._cmd[1] = 0x07       # "Turn power on" command
+        if self._set_ch(ch):
+            return -2
+        return self._send()
+
     def bind(self, ch):
         """ Send bind signal on channel
         First channal is 0 """

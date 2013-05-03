@@ -18,12 +18,14 @@ def help():
     Example of usage NooLite class
 
     USAGE:
-    on <ch>     Turn power on on channel
-    off <ch>    Turn power off on channel
-    switch <ch> Switch between on and off on channel
+    on <ch>         Turn power on on channel
+    off <ch>        Turn power off on channel
+    switch <ch>     Switch between on and off on channel
     set <ch> <lvl>  Set power level on channel
-    bind <ch>   Send bind signal on channel
-    unbind <ch> Send unbind signal on channel
+    save <ch>       Save state on channel to scenario
+    load <ch>       Call saved scenario
+    bind <ch>       Send bind signal on channel
+    unbind <ch>     Send unbind signal on channel
 
     channales should be in 0-7
     level should be in 0-120
@@ -53,6 +55,8 @@ if __name__ == '__main__':
         'off': n.off,
         'switch': n.switch,
         'set': n.set,
+        'save': n.save,
+        'load': n.load,
         'bind': n.bind,
         'unbind': n.unbind}
 
