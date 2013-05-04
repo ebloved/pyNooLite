@@ -10,6 +10,8 @@ setup(
     version = '0.2.0',
     author = 'Anton Balashov',
     author_email = 'sicness@darklogic.ru',
+    maintainer = 'Anton Balashov',
+    maintainer_email = 'sicness@darklogic.ru',
     description = 'Class for NooLite USB stick',
     py_modules = ['noolite'],
     install_requires = ['pyusb'],

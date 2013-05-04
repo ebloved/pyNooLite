@@ -17,7 +17,7 @@ Example:
   n.set(1, 115) # Set 115 level on second channel
   n.bind(7)     # send "bind" signal on channel 8
 
-Look at main.py for a extra example
+Look at example.py for a extra example
 
 Dependences:
 
