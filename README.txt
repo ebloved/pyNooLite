@@ -1,5 +1,5 @@
 This project is a python module for woriking with NooLite USB stick (PC118, PC1116, PC1132).
-Can be easy used for making smarthome.
+Can be easy used for making a smarthome.
 About NooLite: http://www.noo.com.by/
 
 Author: Anton Balashov

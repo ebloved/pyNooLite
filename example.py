@@ -3,8 +3,16 @@
 """
 Example of usage python module for NooLite USB stick
 
+You can use this example like a console control.
+Just copy it to PATH directory:
+    sudo cp example.py /usr/local/bin/noolite
+Or if only for your user:
+    mkdir -p ~/bin && cp example.py ~/bin/noolite
+
+Do not forget check the execute bit (chmod)
 Last version at: https://github.com/Sicness/pyNooLite
 """
+
 import sys
 import noolite
 
@@ -14,7 +22,7 @@ __maintainer__ = "Anton Balashov"
 __email__ = "Sicness@darklogic.ru"
 
 def help():
-    print """
+    print("""
     Example of usage NooLite class
 
     USAGE:
@@ -33,7 +41,7 @@ def help():
     Examples:
         $ python main.py on 1
         $ python main.py set 0 115
-    """
+    """)
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:

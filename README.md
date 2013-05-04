@@ -30,11 +30,9 @@ Site: https://github.com/Sicness/pyNooLite</p>
     n.set(1, 115) # Set 115 level on second channel
     n.bind(7)     # send "bind" signal on channel 8
 
-<p>Look at main.py for a extra example</p>
+<p>Look at example.py for a extra example</p>
 
 <h4>Dependences:</h4>
-
-* Python 2.*
 
 *  python module pyusb<br>
 For Ubuntu do: <br>
