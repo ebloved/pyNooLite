@@ -30,7 +30,7 @@ Site: https://github.com/Sicness/pyNooLite</p>
     n.set(1, 115) # Set 115 level on second channel
     n.bind(7)     # send "bind" signal on channel 8
 
-<p>Look at example.py for a extra example</p>
+<p>Look at noolite file for a extra example</p>
 
 <h4>Dependences:</h4>
 
