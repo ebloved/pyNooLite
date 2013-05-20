@@ -4,7 +4,20 @@
 
 ## Last version at: https://github.com/Sicness/pyNooLite
 
-import usb.core
+import sys
+
+try:
+    import usb.core
+except:
+    sys.stderr.write("""
+  Can't import usb.core
+  please, install pyusb from pypi:
+    pip install pyusb
+  or
+    pip install pyusb --upgrade
+  if needed\n\n""")
+    raise
+
 
 __author__ = "Anton Balashov"
 __license__ = "GPL v3"
