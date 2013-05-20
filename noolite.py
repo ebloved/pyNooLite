@@ -24,9 +24,11 @@ __license__ = "GPL v3"
 __maintainer__ = "Anton Balashov"
 __email__ = "Sicness@darklogic.ru"
 
+
 class NooLiteErr(Exception):
     def __init__(self, value):
         self.value = value
+
     def __str__(self):
         return repr(self.value)
 
@@ -48,13 +50,16 @@ class NooLite:
         try:
             ch = int(ch)
         except ValueError:
-            raise ValueError("channal has %s can't be converted to int" % (type(ch)))
+            raise ValueError("channal has %s can't be converted to int"
+                             % (type(ch)))
         if (ch > self._channales) or (ch < 0):
             raise NooLiteErr("Can't work with %d channal" % (ch))
         self._cmd[4] = ch
 
     def _send(self):
-        dev = usb.core.find(idVendor = self._idVendor, idProduct = self._idProduct)  # find NooLite usb device
+        # find NooLite usb device
+        dev = usb.core.find(idVendor=self._idVendor,
+                            idProduct=self._idProduct)
         if dev is None:
             raise NooLiteErr("Can find device with idVendor=%d idProduct=%d"
                              % (self._idVendor, self._idProduct))

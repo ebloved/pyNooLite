@@ -21,6 +21,7 @@ __license__ = "GPL v3"
 __maintainer__ = "Anton Balashov"
 __email__ = "Sicness@darklogic.ru"
 
+
 def help():
     print("""
     Example of usage NooLite class
@@ -54,12 +55,13 @@ if __name__ == '__main__':
         if len(sys.argv) == 4:
             lvl = int(sys.argv[3])
         else:
-            sys.stderr.write("command 'set' must have additional agument 'lvl'")
+            sys.stderr.write("command 'set' must have \
+                             additional agument 'lvl'")
             help()
             sys.exit(1)
 
     n = noolite.NooLite()
-    cmds = {'on' : n.on,
+    cmds = {'on': n.on,
         'off': n.off,
         'switch': n.switch,
         'set': n.set,
