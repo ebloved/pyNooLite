@@ -1,1 +1,1 @@
-include README.txt noolite tests.py
+include README.txt noolite tests.py CHANGES.txt
