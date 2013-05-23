@@ -14,7 +14,12 @@ Last version at: https://github.com/Sicness/pyNooLite
 """
 
 import sys
-import noolite
+
+try:
+    import noolite
+except ImportError:
+    sys.stderr.write("Please, install last pyusb\n")
+    sys.exit(-1)
 
 __author__ = "Anton Balashov"
 __license__ = "GPL v3"

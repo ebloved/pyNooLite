@@ -15,6 +15,10 @@ Site: https://github.com/Sicness/pyNooLite</p>
     sudo apt-get install pip
     sudo pip install noolite
 
+<h3>Ubuntu/debian</h3
+Ubuntu and debian users can install this module with executable example from ppa:<br>
+    https://launchpad.net/~ctolbhuk/+archive/noolite
+
 <b>Or </b>download this repo and go into.
 
     sudo python setup.py install
