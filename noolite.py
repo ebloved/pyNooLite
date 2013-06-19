@@ -36,7 +36,8 @@ class NooLiteErr(Exception):
 class NooLite:
     _init_command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
-    def __init__(self, channals=8, idVendor=0x16c0, idProduct=0x05df):
+    def __init__(self, channals=8, idVendor=0x16c0,
+                 idProduct=0x05df, tests=False):
         if (type(idVendor) != type(int())) or (type(idProduct)) != type(int()):
             raise ValueError("idVendor and idProduct must has int type")
         if type(channals) != type(int()):
@@ -45,6 +46,7 @@ class NooLite:
         self._idProduct = idProduct
         self._channales = channals
         self._cmd = self._init_command
+        self._tests = tests
 
     def _set_ch(self, ch):
         try:
@@ -57,6 +59,8 @@ class NooLite:
         self._cmd[4] = ch
 
     def _send(self):
+        if self._tests:    # if it's just a unittests
+            return 0
         # find NooLite usb device
         dev = usb.core.find(idVendor=self._idVendor,
                             idProduct=self._idProduct)
@@ -92,19 +96,19 @@ class NooLite:
         Max level is 120
         First channal is 0 """
         self._cmd = self._init_command
-        self._cmd[1] = 0x06       # "Turn power on" command
+        self._cmd[1] = 0x06       # Send 'set level' command
         if self._set_ch(ch):
             return -2
-        self._cmd[2] = 0x01       # send level
+        self._cmd[2] = 0x01       # set flag for use 'value'
         return self._send()
 
         # level in cmd must be in [0, 35 - 155]
         if level == 0:
-            cmd[5] = 0
+            self._cmd[5] = 0
         elif level > 120:
-            cmd[5] = 155
+            self._cmd[5] = 155
         else:
-            cmd[5] = 35 + lvl
+            self._cmd[5] = 35 + level
         return self._send()
 
     def save(self, ch):
