@@ -1,13 +1,16 @@
+# script for setup and make sdist
+
 from setuptools import setup
 #from distutils.core import setup
 import os
 
 def read(fname):
-        return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    " returns content of file placed near"
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name = 'noolite',
-    version = '1.1.0',
+    version = '1.1.1',
     author = 'Anton Balashov',
     author_email = 'sicness@darklogic.ru',
     maintainer = 'Anton Balashov',

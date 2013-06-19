@@ -1,3 +1,8 @@
+noolite (1.1.1)
+  * Added try on no or old pyusb in example
+
+ -- Anton Balashov <sicness@darklogic.ru> Thu, 23 May 2013 22:15:40 +0400
+
 noolite (1.1.0)
 
   * PEP8 for noolite.py and noolite
