@@ -1,3 +1,11 @@
+noolite (1.1.2-1ppa1) UNRELEASED; urgency=low
+
+  * Fixed bugs in set level function
+  * Some moves to PEP8
+  * Install tests to /usr/share/noolite
+
+ -- Anton Balashov <sicness@darklogic.ru>  Thu, 20 Jun 2013 19:52:48 +0400
+
 noolite (1.1.1-1ppa2) raring; urgency=low
 
   * Added the man page for noolte

@@ -100,7 +100,6 @@ class NooLite:
         if self._set_ch(ch):
             return -2
         self._cmd[2] = 0x01       # set flag for use 'value'
-        return self._send()
 
         # level in cmd must be in [0, 35 - 155]
         if level == 0:
