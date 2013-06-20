@@ -1,0 +1,22 @@
+Source: noolite
+Maintainer: Anton Balashov <sicness@darklogic.ru>
+Section: electronics
+Priority: optional
+Build-Depends: python-setuptools (>= 0.6b3), debhelper (>= 7), python-support (>= 0.8.4)
+Homepage: https://github.com/Sicness/pyNooLite
+Vcs-Browser: https://github.com/Sicness/pyNooLite
+Standards-Version: 3.9.4
+
+Package: noolite
+Architecture: all
+Section: electronics
+Priority: optional
+Depends: ${misc:Depends}, ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Provides: ${python:Provides}
+Homepage: https://github.com/Sicness/pyNooLite
+Description: Working with NooLite USB stick
+ This project is a python module and scrpit for woriking with NooLite USB
+ stick (PC118, PC1116, PC1132).
+ Can be easy used for making a smarthome.
+ About NooLite: http://www.noo.com.by/

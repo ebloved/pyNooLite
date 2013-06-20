@@ -1,0 +1,27 @@
+noolite (1.1.1-1ppa2) raring; urgency=low
+
+  * Added the man page for noolte
+  * Updated ancient-standards-version to 3.9.4
+    - No more changes in control file
+
+ -- Anton Balashov <sicness@darklogic.ru>  Sun, 26 May 2013 18:10:25 +0400
+
+noolite (1.1.1-1ppa1) raring; urgency=low
+
+  * New upstream release
+  * Bug fix: no fatal error on pyusb
+
+ -- Anton Balashov <sicness@darklogic.ru>  Thu, 23 May 2013 22:28:25 +0400
+
+noolite (1.1.0-1ppa2) raring; urgency=low
+
+  * New upstream release
+
+ -- Anton Balashov <sicness@darklogic.ru>  Tue, 21 May 2013 11:41:15 +0000
+
+noolite (1.0.0-1ppa1) unstable; urgency=low
+
+  * source package automatically created by stdeb 0.6.0
+  * Modified debian/control
+
+ -- Anton Balashov <sicness@darklogic.ru>  Fri, 17 May 2013 16:38:24 +0400
