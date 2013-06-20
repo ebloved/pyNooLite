@@ -1,3 +1,9 @@
+noolite (1.1.2)
+  * Fix set level function
+  * Some PEP8 work 
+
+ -- Anton Balashov <sicness@darklogic.ru> Thu, 20 Jun 2013 13:35:35 +0400
+
 noolite (1.1.1)
   * Added try on no or old pyusb in example
 
