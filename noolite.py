@@ -54,13 +54,13 @@ class NooLite:
         except ValueError:
             raise ValueError("channal has %s can't be converted to int"
                              % (type(ch)))
-        if (ch > self._channales) or (ch < 0):
+        if (ch >= self._channales) or (ch < 0):
             raise NooLiteErr("Can't work with %d channal" % (ch))
         self._cmd[4] = ch
 
     def _send(self):
         if self._tests:    # if it's just a unittests
-            return 0
+            return self._cmd
         # find NooLite usb device
         dev = usb.core.find(idVendor=self._idVendor,
                             idProduct=self._idProduct)
@@ -102,6 +102,11 @@ class NooLite:
         self._cmd[2] = 0x01       # set flag for use 'value'
 
         # level in cmd must be in [0, 35 - 155]
+        try:
+            level = int(level)
+        except ValueError:
+            raise ValueError("level has %s and can't be converted to int"
+                             % (type(ch)))
         if level == 0:
             self._cmd[5] = 0
         elif level > 120:

@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name = 'noolite',
-    version = '1.1.2',
+    version = '1.1.3',
     author = 'Anton Balashov',
     author_email = 'sicness@darklogic.ru',
     maintainer = 'Anton Balashov',
