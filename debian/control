@@ -14,7 +14,7 @@ Priority: optional
 Depends: ${misc:Depends}, ${python:Depends}
 XB-Python-Version: ${python:Versions}
 Provides: ${python:Provides}
-Homepage: https://github.com/Sicness/pyNooLite
+Homepage: http://noolite.darklogic.ru
 Description: Working with NooLite USB stick
  This project is a python module and scrpit for woriking with NooLite USB
  stick (PC118, PC1116, PC1132).
