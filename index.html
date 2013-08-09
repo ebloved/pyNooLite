@@ -54,13 +54,13 @@
   	  <div class="col-lg-10"><p>This software was developed for working with NooLite USB sticks under GNU/Linux. Supported next sticks: <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc118.html>PC118</a>, <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc1116.html>PC1116</a>, <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc1132.html>PC1132</a> and probably more. The software consist of a python class and example that used as a executable </i>/usr/bin/noolite</i> in some of packages.<br>
 Packages license: GPL-3+</p>
 <p><h3>Examples of class usage:</h3><br>
-	  <code>import noolite</code>
+	  <code>import noolite<br></code>
 
-		<code><br>n = noolite.NooLite()</code><br><br>
-		<code><br>n.on(0)       </code># Turn power on on first channel<br>
-		<code><br>n.off(0)      </code># Turn power off on first channel<br>
-		<code><br>n.set(1, 115) </code># Set 115 level on second channel<br>
-		<code><br>n.bind(7)     </code># send "bind" signal on channel 8<br>
+		<code>n = noolite.NooLite()</code><br>
+		<code>n.on(0)       </code># Turn power on on first channel<br>
+		<code>n.off(0)      </code># Turn power off on first channel<br>
+		<code>n.set(1, 115) </code># Set 115 level on second channel<br>
+		<code>n.bind(7)     </code># send "bind" signal on channel 8<br>
 	  <br>
 </p>
 <p><h3>Examples of binary usage:</h3><br>
