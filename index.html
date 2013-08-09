@@ -51,8 +51,27 @@
 
 	<a id="Description"></a><div class="page-header"><h2>Description</h2></div>
         <div class="row">
-  <div class="col-lg-10"><p>This software was developed for working with NooLite USB sticks under GNU/Linux. Supported next sticks: <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc118.html>PC118</a>, <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc1116.html>PC1116</a>, <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc1132.html>PC1132</a> and probably more. The software consist of a python class and example that used as a executable </i>/usr/bin/noolite</i> in some of packages.<br>
-Packages license: GPL-3+</div>
+  	  <div class="col-lg-10"><p>This software was developed for working with NooLite USB sticks under GNU/Linux. Supported next sticks: <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc118.html>PC118</a>, <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc1116.html>PC1116</a>, <a target="_black" href=http://www.noo.com.by/adapter-dlya-pk-pc1132.html>PC1132</a> and probably more. The software consist of a python class and example that used as a executable </i>/usr/bin/noolite</i> in some of packages.<br>
+Packages license: GPL-3+</p>
+<p><h3>Examples of class usage:</h3><br>
+	  <code>
+	  	import noolite
+
+		n = noolite.NooLite()<br>
+		n.on(0)       # Turn power on on first channel<br>
+		n.off(0)      # Turn power off on first channel<br>
+		n.set(1, 115) # Set 115 level on second channel<br>
+		n.bind(7)     # send "bind" signal on channel 8<br>
+	  </code><br>
+</p>
+<p><h3>Examples of binary usage:</h3>
+	<code>
+		$ noolite on 1        # Turn power on on second channel<br>
+        	$ noolite set 0 115   # Set 115 level on first channel<br>
+        	$ noolite bind 7       # send "bind" signal on channel 8<br>
+	</code>
+</p>
+	  </div>
 	<div class="col-lg-2"><center><img class="img-thumbnail" src=http://ecm7img.ru/thinking-home.ru/preview/947d4c37-a9fa-424d-80d3-610d91f22763_ItemImageForSearchPage_160x218.jpg></center></p></div>
 	</div>
 
