@@ -48,4 +48,4 @@ ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", SUBSYSTEMS=="usb", ACTION=="a
 And add your user to dialout group:<br>
     <i>sudo usermod &lt;user&gt; -a -G dialout</i>
 
-<p><h6>Forked from https://github.com/kyuri/nooLite commit 504b9bd7572ba8f5b337fbb27cd3343fcbbd8550</h6></p>
+<img src=https://www.codeship.io/projects/31d96000-c078-0131-9317-6e458ef8d2a8/status>
