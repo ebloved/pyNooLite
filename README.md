@@ -1,5 +1,5 @@
-<p>This project is a <b>python module</b> for woriking with <b>NooLite USB stick (PC118, PC1116, PC1132)</b>.<br>
-Can be easy used for making smarthome.<br>
+<p>This project is a <b>python module</b> to worik with <b>NooLite USB stick (PC118, PC1116, PC1132)</b>.<br>
+Can be easy used to make a light control for smarthomes.<br>
 About NooLite: http://www.noo.com.by/</p>
 
 
@@ -16,7 +16,7 @@ Site: https://github.com/Sicness/pyNooLite</p>
     sudo pip install noolite
 
 <h3>Ubuntu/debian</h3
-Ubuntu and debian users can install this module with executable example from ppa:<br>
+Ubuntu and debian users can install the module with an executable example from ppa:<br>
     https://launchpad.net/~ctolbhuk/+archive/noolite
 
 <b>Or </b>download this repo and go into.
@@ -34,7 +34,7 @@ Ubuntu and debian users can install this module with executable example from ppa
     n.set(1, 115) # Set 115 level on second channel
     n.bind(7)     # send "bind" signal on channel 8
 
-<p>Look at noolite file for a extra example</p>
+<p>See noolite file for a extra example</p>
 
 <h4>Dependences:</h4>
 
@@ -43,9 +43,7 @@ For Ubuntu do: <br>
      <i>sudo apt-get install python-pip <br>
      sudo pip install pyusb</i><br>
 
-* To have access to device from common user add rule to udev, for example to /etc/udev/rules.d/50-noolite.rules next line:<br>
+* To have access on device from common user add the next rule to udev. For example to /etc/udev/rules.d/50-noolite.rules next line:<br>
 ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", SUBSYSTEMS=="usb", ACTION=="add", MODE="0666", GROUP="dialout"<br>
 And add your user to dialout group:<br>
     <i>sudo usermod &lt;user&gt; -a -G dialout</i>
-
-<img src=https://www.codeship.io/projects/31d96000-c078-0131-9317-6e458ef8d2a8/status>
