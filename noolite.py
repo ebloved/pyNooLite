@@ -146,7 +146,7 @@ class NooLite:
         """ Send unbind signal on channel
         First channal is 0 """
         self._cmd = self._init_command
-        self._cmd[1] = 0x0f       # "unbind" command
+        self._cmd[1] = 0x09       # "unbind" command
         if self._set_ch(ch):
             return -2
         return self._send()
