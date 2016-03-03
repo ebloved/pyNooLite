@@ -33,17 +33,22 @@ class NooLiteErr(Exception):
         return repr(self.value)
 
 
+class NooLiteDeviceLookupErr(NooLiteErr):
+    pass
+
+
 class NooLite:
     _init_command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
     def __init__(self, channals=8, idVendor=0x16c0,
-                 idProduct=0x05df, tests=False):
+                 idProduct=0x05df, tests=False, **device_kwargs):
         if (type(idVendor) != type(int())) or (type(idProduct)) != type(int()):
             raise ValueError("idVendor and idProduct must has int type")
         if type(channals) != type(int()):
             raise ValueError("channals must has int type")
         self._idVendor = idVendor
         self._idProduct = idProduct
+        self._device_kwargs = device_kwargs
         self._channales = channals
         self._cmd = self._init_command
         self._tests = tests
@@ -62,11 +67,16 @@ class NooLite:
         if self._tests:    # if it's just a unittests
             return self._cmd
         # find NooLite usb device
-        dev = usb.core.find(idVendor=self._idVendor,
-                            idProduct=self._idProduct)
+        dev = usb.core.find(
+            idVendor=self._idVendor, idProduct=self._idProduct,
+            **self._device_kwargs)
         if dev is None:
-            raise NooLiteErr("Can find device with idVendor=%d idProduct=%d"
-                             % (self._idVendor, self._idProduct))
+            error = "Can't find device with idVendor=%d, idProduct=%d" \
+                % (self._idVendor, self._idProduct)
+            if self._device_kwargs:
+                error += ", " + ", ".join(
+                    ["%s=%s" % (k, v) for k, v in self._device_kwargs.items()])
+            raise NooLiteDeviceLookupErr(error)
         if dev.is_kernel_driver_active(0) is True:
             dev.detach_kernel_driver(0)
         dev.set_configuration()
