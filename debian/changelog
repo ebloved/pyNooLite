@@ -1,4 +1,4 @@
-noolite (1.2.0-1ppa1) precise; urgency=low
+noolite (1.2.1-1ppa1) precise; urgency=low
   * Fixed unbind(self, ch) function with correct 0x09 command
   * Added option to refine USB device search by passing optional pyusb core.find() arguments to NooLite object constructor
   * Specialised NooLiteDeviceLookupErr is now raised if device is not found / not connected
