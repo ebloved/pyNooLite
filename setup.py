@@ -17,7 +17,7 @@ setup(
     maintainer_email = 'sicness@darklogic.ru',
     description = 'Class for NooLite USB stick',
     py_modules = ['noolite'],
-    install_requires = ['pyusb'],
+    install_requires = ['pyusb>=1.0.0b2'],
     license = "GPLv3",
     platforms = 'any',
     url = 'https://github.com/Sicness/pyNooLite',
