@@ -1,3 +1,10 @@
+noolite (1.2.0)
+  * Fixed unbind(self, ch) function with correct 0x09 command
+  * Added option to refine USB device search by passing optional pyusb core.find() arguments to NooLite object constructor
+  * Specialised NooLiteDeviceLookupErr is now raised if device is not found / not connected
+
+ -- Yaraslau Zhylko <yaraslauzhylko@gmail.com> Sun, 13 Mar 2016 11:33:33 +0400
+
 noolite (1.1.3)
   * Impoved tests. Now tests checks returned cmd
   * New tests for set function
