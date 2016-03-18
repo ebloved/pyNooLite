@@ -11,6 +11,10 @@ init_cmd = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
 
 class Tests(unittest.TestCase):
+
+    def setUp(self):
+        self.exp_cmd = init_cmd[:]
+
     def test_init_ch_type(self):
         self.assertRaises(
             ValueError, noolite.NooLite, channals="bla", tests=True)
@@ -25,17 +29,15 @@ class Tests(unittest.TestCase):
 
     def test_ch_str(self):
         switcher = noolite.NooLite(tests=True)
-        cmd = init_cmd
-        cmd[4] = 7
-        cmd[1] = 0x02
-        self.assertEqual(switcher.on("7"), cmd)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x02
+        self.assertEqual(switcher.on("7"), self.exp_cmd)
 
     def test_ch_int(self):
         switcher = noolite.NooLite(tests=True)
-        cmd = init_cmd
-        cmd[4] = 7
-        cmd[1] = 0x00
-        self.assertEqual(switcher.off(7), cmd)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x00
+        self.assertEqual(switcher.off(7), self.exp_cmd)
 
     def test_ch_negative(self):
         switcher = noolite.NooLite(tests=True)
@@ -45,35 +47,87 @@ class Tests(unittest.TestCase):
         switcher = noolite.NooLite(channals=32, tests=True)
         self.assertRaises(noolite.NooLiteErr, switcher.on, 42)
 
+    def test_on(self):
+        switcher = noolite.NooLite(tests=True)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x02
+        self.exp_cmd[2] = 0x00
+        self.exp_cmd[5] = 0x00
+        self.assertEqual(switcher.on(7), self.exp_cmd)
+
+    def test_off(self):
+        switcher = noolite.NooLite(tests=True)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x00
+        self.exp_cmd[2] = 0x00
+        self.exp_cmd[5] = 0x00
+        self.assertEqual(switcher.off(7), self.exp_cmd)
+
     def test_set(self):
         switcher = noolite.NooLite(tests=True)
         value = 50
-        cmd = init_cmd
-        cmd[4] = 7
-        cmd[2] = 0x01
-        cmd[1] = 0x06
-        cmd[5] = 35 + value
-        self.assertEqual(switcher.set(7, value), cmd)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[2] = 0x01
+        self.exp_cmd[1] = 0x06
+        self.exp_cmd[5] = 35 + value
+        self.assertEqual(switcher.set(7, value), self.exp_cmd)
 
     def test_set_str(self):
         switcher = noolite.NooLite(tests=True)
         value = "70"
-        cmd = init_cmd
-        cmd[4] = 7
-        cmd[2] = 0x01
-        cmd[1] = 0x06
-        cmd[5] = 35 + int(value)
-        self.assertEqual(switcher.set(7, value), cmd)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[2] = 0x01
+        self.exp_cmd[1] = 0x06
+        self.exp_cmd[5] = 35 + int(value)
+        self.assertEqual(switcher.set(7, value), self.exp_cmd)
 
     def test_set_zero(self):
         switcher = noolite.NooLite(tests=True)
         value = 0
-        cmd = init_cmd
-        cmd[4] = 7
-        cmd[2] = 0x01
-        cmd[1] = 0x06
-        cmd[5] = 0
-        self.assertEqual(switcher.set(7, value), cmd)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[2] = 0x01
+        self.exp_cmd[1] = 0x06
+        self.exp_cmd[5] = 0
+        self.assertEqual(switcher.set(7, value), self.exp_cmd)
+
+    def test_switch(self):
+        switcher = noolite.NooLite(tests=True)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x04
+        self.exp_cmd[2] = 0x00
+        self.exp_cmd[5] = 0x00
+        self.assertEqual(switcher.switch(7), self.exp_cmd)
+
+    def test_bind(self):
+        switcher = noolite.NooLite(tests=True)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x0f
+        self.exp_cmd[2] = 0x00
+        self.exp_cmd[5] = 0x00
+        self.assertEqual(switcher.bind(7), self.exp_cmd)
+
+    def test_unbind(self):
+        switcher = noolite.NooLite(tests=True)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x09
+        self.exp_cmd[2] = 0x00
+        self.exp_cmd[5] = 0x00
+        self.assertEqual(switcher.unbind(7), self.exp_cmd)
+
+    def test_simple_cmds_reset_format_and_data_bytes_after_set_cmd_call(self):
+        switcher = noolite.NooLite(tests=True)
+        level = 67
+        for method in ('on', 'off', 'switch', 'bind', 'unbind'):
+            # Call set method
+            act_cmd = switcher.set(7, level)
+            self.assertEqual(act_cmd[1], 0x06)  # Command
+            self.assertEqual(act_cmd[2], 0x01)  # Format
+            self.assertEqual(act_cmd[5], 35 + level)  # Level
+            # Call non-set method
+            act_cmd = getattr(switcher, method)(7)
+            self.assertNotEqual(act_cmd[1], 0x06)  # Command
+            self.assertEqual(act_cmd[2], 0x00)  # Format
+            self.assertEqual(act_cmd[5], 0x00)  # Level
 
     def test_device_kwargs_used_for_device_finding(self):
         switcher = noolite.NooLite(bus=1, address=12)

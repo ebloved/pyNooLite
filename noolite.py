@@ -38,6 +38,7 @@ class NooLiteDeviceLookupErr(NooLiteErr):
 
 
 class NooLite:
+
     _init_command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
     def __init__(self, channals=8, idVendor=0x16c0,
@@ -50,7 +51,6 @@ class NooLite:
         self._idProduct = idProduct
         self._device_kwargs = device_kwargs
         self._channales = channals
-        self._cmd = self._init_command
         self._tests = tests
 
     def _set_ch(self, ch):
@@ -86,7 +86,7 @@ class NooLite:
     def on(self, ch):
         """Turn power on on channel
         First channal is 0 """
-        self._cmd = self._init_command
+        self._cmd = self._init_command[:]
         self._cmd[1] = 0x02       # "Turn power on" command
         if self._set_ch(ch):
             return -2
@@ -95,7 +95,7 @@ class NooLite:
     def off(self, ch):
         """Turn power off on channel
         First channal is 0 """
-        self._cmd = self._init_command
+        self._cmd = self._init_command[:]
         self._cmd[1] = 0x00       # "Turn power off" command
         if self._set_ch(ch):
             return -2
@@ -105,7 +105,7 @@ class NooLite:
         """Set brightness level
         Max level is 120
         First channal is 0 """
-        self._cmd = self._init_command
+        self._cmd = self._init_command[:]
         self._cmd[1] = 0x06       # Send 'set level' command
         if self._set_ch(ch):
             return -2
@@ -128,7 +128,7 @@ class NooLite:
     def save(self, ch):
         """Save state on channel to scenario
         First channal is 0 """
-        self._cmd = self._init_command
+        self._cmd = self._init_command[:]
         self._cmd[1] = 0x07       # "Turn power on" command
         if self._set_ch(ch):
             return -2
@@ -137,7 +137,7 @@ class NooLite:
     def load(self, ch):
         """Call saved scenario on channel
         First channal is 0 """
-        self._cmd = self._init_command
+        self._cmd = self._init_command[:]
         self._cmd[1] = 0x07       # "Turn power on" command
         if self._set_ch(ch):
             return -2
@@ -146,7 +146,7 @@ class NooLite:
     def bind(self, ch):
         """ Send bind signal on channel
         First channal is 0 """
-        self._cmd = self._init_command
+        self._cmd = self._init_command[:]
         self._cmd[1] = 0x0f       # "bind" command
         if self._set_ch(ch):
             return -2
@@ -155,7 +155,7 @@ class NooLite:
     def unbind(self, ch):
         """ Send unbind signal on channel
         First channal is 0 """
-        self._cmd = self._init_command
+        self._cmd = self._init_command[:]
         self._cmd[1] = 0x09       # "unbind" command
         if self._set_ch(ch):
             return -2
@@ -164,7 +164,7 @@ class NooLite:
     def switch(self, ch):
         """switch power between off and on on channel
         First channal is 0 """
-        self._cmd = self._init_command
+        self._cmd = self._init_command[:]
         self._cmd[1] = 0x04       # "switch" command
         if self._set_ch(ch):
             return -2
