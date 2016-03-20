@@ -116,7 +116,7 @@ class NooLite:
             level = int(level)
         except ValueError:
             raise ValueError("level has %s and can't be converted to int"
-                             % (type(ch)))
+                             % (type(level)))
         if level == 0:
             self._cmd[5] = 0
         elif level > 120:
@@ -129,7 +129,7 @@ class NooLite:
         """Save state on channel to scenario
         First channal is 0 """
         self._cmd = self._init_command[:]
-        self._cmd[1] = 0x07       # "Turn power on" command
+        self._cmd[1] = 0x08       # "Save scenario" command
         if self._set_ch(ch):
             return -2
         return self._send()
@@ -138,7 +138,7 @@ class NooLite:
         """Call saved scenario on channel
         First channal is 0 """
         self._cmd = self._init_command[:]
-        self._cmd[1] = 0x07       # "Turn power on" command
+        self._cmd[1] = 0x07       # "Load scenarion" command
         if self._set_ch(ch):
             return -2
         return self._send()

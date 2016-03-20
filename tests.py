@@ -98,6 +98,22 @@ class Tests(unittest.TestCase):
         self.exp_cmd[5] = 0x00
         self.assertEqual(switcher.switch(7), self.exp_cmd)
 
+    def test_save(self):
+        switcher = noolite.NooLite(tests=True)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x08
+        self.exp_cmd[2] = 0x00
+        self.exp_cmd[5] = 0x00
+        self.assertEqual(switcher.save(7), self.exp_cmd)
+
+    def test_load(self):
+        switcher = noolite.NooLite(tests=True)
+        self.exp_cmd[4] = 7
+        self.exp_cmd[1] = 0x07
+        self.exp_cmd[2] = 0x00
+        self.exp_cmd[5] = 0x00
+        self.assertEqual(switcher.load(7), self.exp_cmd)
+
     def test_bind(self):
         switcher = noolite.NooLite(tests=True)
         self.exp_cmd[4] = 7
