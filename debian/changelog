@@ -1,3 +1,16 @@
+noolite (1.3.0-1ppa1) precise; urgency=low
+  * Fixed 'save scenario' command
+  * Fixed 'on', 'off' and other simple commands sending incorrect format and level data after 'set' command calls
+  * Deprecated 'channals' NooLite class init argument in favour of correctly spelled 'channels' one
+  * Deprecated 'tests' NooLite class init argument
+  * TypeErrors raised instead of ValueErrors where appropriate
+  * General code refactoring
+  * PEP8 corrections
+  * Corrections of error messages and descriptions
+  * Added .gitignore file to github repository
+
+ -- Anton Balashov <sicness@darklogic.ru>  Sun, 27 Mar 2016 15:06:33 +0400
+
 noolite (1.2.1-1ppa1) precise; urgency=low
   * Fixed unbind(self, ch) function with correct 0x09 command
   * Added option to refine USB device search by passing optional pyusb core.find() arguments to NooLite object constructor
