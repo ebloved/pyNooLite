@@ -1,4 +1,12 @@
+noolite (1.4.0-1ppa1) precise; urgency=low
+
+  * Added option to specify number of command repeats to enhance transfer reliability
+  * Added hardware-required intervals between successive commands to avoid command signal clutter
+
+ -- Anton Balashov <sicness@darklogic.ru> Thu, 31 Mar 2016 11:00:00 +0400
+
 noolite (1.3.0-1ppa1) precise; urgency=low
+
   * Fixed 'save scenario' command
   * Fixed 'on', 'off' and other simple commands sending incorrect format and level data after 'set' command calls
   * Deprecated 'channals' NooLite class init argument in favour of correctly spelled 'channels' one
@@ -12,6 +20,7 @@ noolite (1.3.0-1ppa1) precise; urgency=low
  -- Anton Balashov <sicness@darklogic.ru>  Sun, 27 Mar 2016 15:06:33 +0400
 
 noolite (1.2.1-1ppa1) precise; urgency=low
+
   * Fixed unbind(self, ch) function with correct 0x09 command
   * Added option to refine USB device search by passing optional pyusb core.find() arguments to NooLite object constructor
   * Specialised NooLiteDeviceLookupErr is now raised if device is not found / not connected

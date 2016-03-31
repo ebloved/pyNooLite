@@ -5,6 +5,7 @@ try:
 except ImportError:
     import mock
 
+import time
 import warnings
 
 import noolite
@@ -14,12 +15,11 @@ class Tests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.ctrl_cmd = (0x21, 0x09, 0, 0)
         if not hasattr(cls, 'assertRaisesRegex'):  # Python 2 compatibility
             cls.assertRaisesRegex = cls.assertRaisesRegexp
 
     def setUp(self):
-        self.exp_cmd = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+        self.exp_cmd = [0x50, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
         self.mock_device = mock.Mock()
         patcher = mock.patch('usb.core.find')
         self.addCleanup(patcher.stop)
@@ -35,10 +35,10 @@ class Tests(unittest.TestCase):
         self.assertEqual(controller._idProduct, 0x05df)
         self.assertEqual(controller._device_kwargs, {})
 
-    def test_init_channel_type(self):
+    def test_init_channels_type(self):
         self.assertRaises(TypeError, noolite.NooLite, channels='blah')
 
-    def test_init_channel_value(self):
+    def test_init_channels_value(self):
         for channels in (-5, -1, 0):
             self.assertRaisesRegex(
                 ValueError, "greater than 0",
@@ -49,6 +49,19 @@ class Tests(unittest.TestCase):
 
     def test_init_idProduct_type(self):
         self.assertRaises(TypeError, noolite.NooLite, idProduct='blah')
+
+    def test_init_repeats_type(self):
+        self.assertRaises(TypeError, noolite.NooLite, repeats='blah')
+
+    def test_init_repeats_value(self):
+        for repeats in range(-10, 10):
+            if 0 <= repeats <= 7:
+                noolite.NooLite(repeats=repeats)  # Supported values
+            else:
+                with self.assertRaisesRegex(
+                        ValueError, "between 0 .* 7",
+                        msg="Current value: %d" % repeats):
+                    noolite.NooLite(repeats=repeats)
 
     def test_init_with_device_kwargs(self):
         controller = noolite.NooLite(bus=1, address=21)
@@ -234,10 +247,10 @@ class Tests(unittest.TestCase):
     # Test multiple calls
 
     def test_simple_cmds_reset_format_and_data_bytes_after_set_cmd_call(self):
-        controller = noolite.NooLite()
         level = 67
         for method in (
                 'on', 'off', 'switch', 'save', 'load', 'bind', 'unbind'):
+            controller = noolite.NooLite()
             # Call set method
             controller.set(7, level)
             act_cmd = self.mock_device.ctrl_transfer.call_args[0][-1]
@@ -253,13 +266,91 @@ class Tests(unittest.TestCase):
             self.assertEqual(act_cmd[5], 0x00)  # Level
             act_cmd = self.mock_device.ctrl_transfer.reset_mock()
 
+    # Test command repeats
+
+    def test_repeats_being_correctly_sent(self):
+        exp_results = (
+            (0, 0x10),
+            (1, 0x30),
+            (2, 0x50),
+            (3, 0x70),
+            (4, 0x90),
+            (5, 0xb0),
+            (6, 0xd0),
+            (7, 0xf0)
+        )
+        for repeats, exp_mode in exp_results:
+            self.mock_device.ctrl_transfer.reset_mock()
+            controller = noolite.NooLite(repeats=repeats)
+            self.exp_cmd[0] = exp_mode  # mode (bit rate and repeats)
+            self.exp_cmd[4] = 4  # channel
+            self.exp_cmd[1] = 0x08  # save scenario command
+            controller.save(4)
+            self.mock_device.ctrl_transfer.assert_called_once_with(
+                mock.ANY, mock.ANY, mock.ANY, mock.ANY, self.exp_cmd)
+
+    # Test command interval
+
+    def test_command_interval_depends_on_repeats(self):
+        exp_results = (
+            (0, 0.15),
+            (1, 0.30),
+            (2, 0.45),
+            (3, 0.60),
+            (4, 0.75),
+            (5, 0.90),
+            (6, 1.05),
+            (7, 1.20)
+        )
+        for repeats, exp_interval in exp_results:
+            self.mock_device.ctrl_transfer.reset_mock()
+            controller = noolite.NooLite(repeats=repeats)
+            self.assertAlmostEqual(
+                controller._command_interval, exp_interval,
+                places=15)
+
+    def test_command_interval_is_actually_applied(self):
+        for repeats, exp_duration in (
+                (0, 0.3),
+                (1, 0.6),
+                (2, 0.9)):
+            controller = noolite.NooLite(repeats=repeats)
+            start = time.time()
+            for _ in range(3):
+                controller.load(3)
+            self.assertAlmostEqual(time.time() - start, exp_duration, places=1)
+
+    def test_no_command_interval_on_first_call(self):
+        controller = noolite.NooLite(repeats=7)  # Interval 1.2s
+        start = time.time()
+        controller.load(3)
+        self.assertLess(time.time() - start, 0.1)
+
+    def test_part_of_command_interval_after_short_pause(self):
+        controller = noolite.NooLite(repeats=2)  # Interval 0.45s
+        controller.load(3)
+        time.sleep(0.2)  # Sleep about half of the 0.45s interval
+        start = time.time()
+        controller.load(3)
+        remaining_interval = time.time() - start
+        self.assertGreater(remaining_interval, 0.2)
+        self.assertLess(remaining_interval, 0.3)
+
+    def test_no_command_interval_after_long_pause(self):
+        controller = noolite.NooLite(repeats=2)  # Interval 0.45s
+        controller.load(3)
+        time.sleep(0.5)  # Sleep more than 0.45s
+        start = time.time()
+        controller.load(3)
+        self.assertLess(time.time() - start, 0.1)
+
     # Test all commands returning 0 to indicate success
 
     def test_commands_return_zero_to_indicate_success(self):
-        controller = noolite.NooLite()
         for method in (
                 'on', 'off', 'switch', 'set',
                 'save', 'load', 'bind', 'unbind'):
+            controller = noolite.NooLite()
             if method == 'set':
                 return_value = getattr(controller, method)(7, 42)
             else:

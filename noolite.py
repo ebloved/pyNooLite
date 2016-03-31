@@ -4,6 +4,7 @@
 
 # Latest version at: https://github.com/Sicness/pyNooLite
 
+import time
 import warnings
 
 try:
@@ -18,6 +19,12 @@ __author__ = "Anton Balashov"
 __license__ = "GPL v3"
 __maintainer__ = "Anton Balashov"
 __email__ = "Sicness@darklogic.ru"
+__credits__ = [
+    "Anton Balashov",
+    "Yuri Karpenko",
+    "Alex Bogdanovich",
+    "Yaraslau Zhylko"
+]
 
 
 class NooLiteErr(Exception):
@@ -40,12 +47,30 @@ class NooLiteDeviceLookupErr(NooLiteErr):
 
 class NooLite:
 
-    """NooLite controller device."""
+    """NooLite controller device.
 
-    _initial_command = [0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+    Keyword arguments:
+        channels (int): number of controller channels (default: 8).
+        idVendor (int): ID of the controller device vendor (default: 0x16c0).
+        idProduct (int): product ID of the controller device (default: 0x05df).
+        repeats (int): number of times the original command
+                is repeated to ensure transfer reliability.
+                0 means no repeats (just one original command).
+                7 means original command plus 7 additional resends: 8 in total.
+                (Valid values: 0-7; default: 2).
+        **device_kwargs (dict): additional usb.core.find() arguments to help
+                distinguish between several controllers.
+
+        channals (int): deprecated version of 'channels' argument.
+        tests (bool): deprecated, not used any more.
+    """
+
+    _base_command = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+    _bitrate = 2  # Default command transfer bit rate
+    _base_command_interval = 0.15
 
     def __init__(
-            self, channels=8, idVendor=0x16c0, idProduct=0x05df,
+            self, channels=8, idVendor=0x16c0, idProduct=0x05df, repeats=2,
             channals=None, tests=None, **device_kwargs):
         # Channels
         if not isinstance(channels, int):
@@ -69,6 +94,17 @@ class NooLite:
                 "'idVendor' and 'idProduct' arguments must be of int type")
         self._idVendor = idVendor
         self._idProduct = idProduct
+        # Get number of controller command repeats
+        if not isinstance(repeats, int):
+            raise TypeError("'repeats' argument must be of int type")
+        if not (0 <= repeats <= 7):
+            raise ValueError("'repeats' argument must be between 0 and 7")
+        # Set bit rate and number of repeats for initial controller command
+        self._initial_command = self._base_command[:]
+        self._initial_command[0] = (self._bitrate << 3) + (repeats << 5)
+        # Set command interval based on number of repeats
+        self._command_interval = self._base_command_interval * (repeats + 1)
+        self._latest_command_timestamp = 0
         # Device kwargs for usb.core.find()
         self._device_kwargs = device_kwargs
         # Deprecated 'tests' argument
@@ -186,8 +222,13 @@ class NooLite:
             device.detach_kernel_driver(0)
         # Set controller device configuration
         device.set_configuration()
+        # Make sure command interval is observed
+        time_delta = time.time() - self._latest_command_timestamp
+        time.sleep(max(self._command_interval - time_delta, 0))
         # Send actual actuation command
         device.ctrl_transfer(0x21, 0x09, 0, 0, cmd)
+        # Record latest command timestamp
+        self._latest_command_timestamp = time.time()
 
     def _format_channels_data(self):
         """Format number of channels for string output."""
