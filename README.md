@@ -2,7 +2,7 @@
 
 <p>I've just added MQTT support to connect my Noolite modules to HomeAssistant</p>
 
-<p>After installing original module, just provide <b>username</b> and <b>password</b> in <b>noolite_mqtt</b>,<br>
+<p>After installing original module, just provide <b>username</b>, <b>password</b> and <b>hostname</b> in <b>noolite_mqtt</b>,<br>
 copy this file in <b>/usr/bin/</b> and install and start <b>noolite-mqtt.service</b> by copying in onto <b>/etc/systemd/system/</b><br>
 and  entering <br><b> systemctl enable noolite-mqtt<br>systemctl start noolite-mqtt</b> 
 

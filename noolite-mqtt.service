@@ -1,7 +1,5 @@
 [Unit]
 Description=Noolite control via mqtt
-Wants=mosquitto.service
-After=mosquitto.service
 
 [Service]
 ExecStart=/usr/bin/noolite_mqtt &
